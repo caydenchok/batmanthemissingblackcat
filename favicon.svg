@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" aria-hidden="true">
+  <defs>
+    <linearGradient id="catBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a2a30;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#151518;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="collarGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff3b30;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff6b60;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff3b30;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="eyeShine" cx="30%" cy="30%" r="50%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#fff;stop-opacity:0" />
+    </radialGradient>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Main Body Silhouette -->
+  <g filter="url(#softGlow)">
+    <path class="cat-body" d="M200,450 C150,450 120,420 110,380 C100,340 110,300 130,250 C140,225 150,210 160,200 C140,190 130,160 135,130 L125,80 L160,100 C175,95 225,95 240,100 L275,80 L265,130 C270,160 260,190 240,200 C250,210 260,225 270,250 C290,300 300,340 290,380 C280,420 250,450 200,450 Z" fill="url(#catBody)"/>
+    
+    <!-- Tail wrapping around -->
+    <path class="tail" d="M290,380 Q320,380 330,340 Q340,300 320,280" fill="none" stroke="url(#catBody)" stroke-width="24" stroke-linecap="round"/>
+  </g>
+
+  <!-- Collar -->
+  <g class="collar-group">
+    <!-- Base Black Collar -->
+    <path d="M165,215 Q200,225 235,215" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+    <!-- Yellow Stripes (Dashed Stroke) -->
+    <path d="M165,215 Q200,225 235,215" fill="none" stroke="#ffcc00" stroke-width="8" stroke-linecap="butt" stroke-dasharray="1.5 3" opacity="0.9"/>
+    
+    <!-- Yellow Bell -->
+    <g class="bell">
+       <!-- Ring connector -->
+       <circle cx="200" cy="224" r="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+       <!-- Bell Body -->
+       <circle cx="200" cy="232" r="7" fill="#ffcc00" stroke="#daa520" stroke-width="1"/>
+       <!-- Bell shine -->
+       <circle cx="198" cy="230" r="1.5" fill="#fff" opacity="0.6"/>
+       <!-- Bell slit/hole -->
+       <circle cx="200" cy="235" r="1.5" fill="#333"/>
+       <path d="M200,235 L200,239" stroke="#333" stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- Face Details -->
+  <g class="cat-face">
+    <!-- Eyes -->
+    <g class="eyes">
+      <ellipse class="eye eye-left" cx="170" cy="150" rx="14" ry="18" fill="#ffcc00"/>
+      <ellipse class="eye eye-right" cx="230" cy="150" rx="14" ry="18" fill="#ffcc00"/>
+      
+      <ellipse class="pupil" cx="170" cy="150" rx="3" ry="14" fill="#000"/>
+      <ellipse class="pupil" cx="230" cy="150" rx="3" ry="14" fill="#000"/>
+      
+      <!-- Eye Highlights -->
+      <circle cx="165" cy="142" r="3" fill="white" opacity="0.6"/>
+      <circle cx="225" cy="142" r="3" fill="white" opacity="0.6"/>
+    </g>
+
+    <!-- Nose -->
+    <path d="M195,185 L205,185 L200,192 Z" fill="#333"/>
+    
+    <!-- Whiskers -->
+    <g stroke="#ffffff" stroke-width="0.5" opacity="0.3" fill="none">
+       <path d="M180,190 Q150,185 130,180"/>
+       <path d="M180,195 Q150,195 130,200"/>
+       <path d="M220,190 Q250,185 270,180"/>
+       <path d="M220,195 Q250,195 270,200"/>
+    </g>
+  </g>
+</svg>

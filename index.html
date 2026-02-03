@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0d0f">
+  <title>BATMAN</title>
+  <meta name="description" content="A modern animated storyline about Batman, a missing black cat.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <!-- Three.js for 3D Game -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <div class="background-animation">
+    <canvas id="starfield"></canvas>
+  </div>
+
+  <header class="site-header">
+    <div class="brand">BATMAN</div>
+    <div class="header-controls">
+      <nav class="nav">
+        <a href="#story" data-i18n="nav_story">Story</a>
+        <a href="#clues" data-i18n="nav_clues">Clues</a>
+        <a href="#last-seen" data-i18n="nav_last_seen">Last Seen</a>
+        <a href="#help" data-i18n="nav_help">Help</a>
+      </nav>
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="divider">|</span>
+        <button class="lang-btn" data-lang="ms">BM</button>
+        <span class="divider">|</span>
+        <button class="lang-btn" data-lang="zh">中文</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="status-badge" data-i18n="hero_badge">🚨 MISSING</div>
+      <h1 class="title">
+        <span class="accent" style="display: block; font-size: 1.2em; margin-bottom: 10px;">BATMAN</span>
+        <span style="display: block; font-size: 0.4em; font-weight: 400; color: #fff; letter-spacing: 0.05em;" data-i18n="hero_title_sub">The Missing Black Cat</span>
+      </h1>
+      <p class="subtitle" data-i18n="hero_subtitle">Our beloved black cat is lost in <strong>Taman Antarabangsa, Likas</strong>. We need your help to find him.</p>
+      <div class="hero-actions">
+        <a class="cta" href="https://wa.me/60143192305?text=I%20found%20Batman!" target="_blank" data-i18n="cta_found">
+          <span class="icon" style="margin-right: 8px; font-size: 1.2em">💬</span> I Found Him
+        </a>
+        <a class="cta secondary" href="#clues" data-i18n="cta_details">View Details</a>
+      </div>
+    </div>
+    <div class="cat-wrap">
+      <svg class="cat" viewBox="0 0 400 500" aria-hidden="true">
+        <defs>
+          <linearGradient id="catBody" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2a2a30;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#151518;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="collarGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#ff3b30;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#ff6b60;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#ff3b30;stop-opacity:1" />
+          </linearGradient>
+          <radialGradient id="eyeShine" cx="30%" cy="30%" r="50%">
+            <stop offset="0%" style="stop-color:#fff;stop-opacity:0.9" />
+            <stop offset="100%" style="stop-color:#fff;stop-opacity:0" />
+          </radialGradient>
+          <filter id="softGlow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- Main Body Silhouette -->
+        <g filter="url(#softGlow)">
+          <path class="cat-body" d="M200,450 C150,450 120,420 110,380 C100,340 110,300 130,250 C140,225 150,210 160,200 C140,190 130,160 135,130 L125,80 L160,100 C175,95 225,95 240,100 L275,80 L265,130 C270,160 260,190 240,200 C250,210 260,225 270,250 C290,300 300,340 290,380 C280,420 250,450 200,450 Z" fill="url(#catBody)"/>
+          
+          <!-- Tail wrapping around -->
+          <path class="tail" d="M290,380 Q320,380 330,340 Q340,300 320,280" fill="none" stroke="url(#catBody)" stroke-width="24" stroke-linecap="round"/>
+        </g>
+
+        <!-- Collar -->
+        <g class="collar-group">
+          <!-- Base Black Collar -->
+          <path d="M165,215 Q200,225 235,215" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+          <!-- Yellow Stripes (Dashed Stroke) -->
+          <path d="M165,215 Q200,225 235,215" fill="none" stroke="#ffcc00" stroke-width="8" stroke-linecap="butt" stroke-dasharray="1.5 3" opacity="0.9"/>
+          
+          <!-- Yellow Bell -->
+          <g class="bell">
+             <!-- Ring connector -->
+             <circle cx="200" cy="224" r="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+             <!-- Bell Body -->
+             <circle cx="200" cy="232" r="7" fill="#ffcc00" stroke="#daa520" stroke-width="1"/>
+             <!-- Bell shine -->
+             <circle cx="198" cy="230" r="1.5" fill="#fff" opacity="0.6"/>
+             <!-- Bell slit/hole -->
+             <circle cx="200" cy="235" r="1.5" fill="#333"/>
+             <path d="M200,235 L200,239" stroke="#333" stroke-width="1"/>
+          </g>
+        </g>
+
+        <!-- Face Details -->
+        <g class="cat-face">
+          <!-- Eyes -->
+          <g class="eyes">
+            <ellipse class="eye eye-left" cx="170" cy="150" rx="14" ry="18" fill="#ffcc00"/>
+            <ellipse class="eye eye-right" cx="230" cy="150" rx="14" ry="18" fill="#ffcc00"/>
+            
+            <ellipse class="pupil" cx="170" cy="150" rx="3" ry="14" fill="#000"/>
+            <ellipse class="pupil" cx="230" cy="150" rx="3" ry="14" fill="#000"/>
+            
+            <!-- Eye Highlights -->
+            <circle cx="165" cy="142" r="3" fill="white" opacity="0.6"/>
+            <circle cx="225" cy="142" r="3" fill="white" opacity="0.6"/>
+          </g>
+
+          <!-- Nose -->
+          <path d="M195,185 L205,185 L200,192 Z" fill="#333"/>
+          
+          <!-- Whiskers -->
+          <g stroke="#ffffff" stroke-width="0.5" opacity="0.3" fill="none">
+             <path d="M180,190 Q150,185 130,180"/>
+             <path d="M180,195 Q150,195 130,200"/>
+             <path d="M220,190 Q250,185 270,180"/>
+             <path d="M220,195 Q250,195 270,200"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <main>
+    <section id="status-update" class="panel" style="min-height: auto; padding: 20px 24px;">
+      <div class="panel-inner" style="width: 100%; max-width: 800px;">
+        <div class="status-card">
+          <div class="status-header" data-i18n="status_header">
+            <span class="blinking-dot">●</span> LIVE UPDATE
+          </div>
+          <h3 data-i18n="status_title">Checking CCTV Surveillance</h3>
+          <p data-i18n="status_desc">We are currently reviewing security footage from the neighborhood to trace Batman's movements.</p>
+          
+          <div class="progress-container">
+            <div class="progress-bar"></div>
+          </div>
+          <div class="status-meta">
+            <span data-i18n="status_loc_label">Location: Taman Antarabangsa</span>
+            <span data-i18n="status_val">Status: In Progress...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="game" class="panel">
+      <div class="panel-inner game-container">
+        <h2 data-i18n="game_title">Help Batman Find Home</h2>
+        <p data-i18n="game_instr">Use <strong>Arrow Keys</strong> or <strong>Tap</strong> to dodge obstacles and guide Batman home!</p>
+        <div id="game-canvas-container">
+          <div id="game-ui">
+            <div id="score">Distance: 0m</div>
+            <button id="start-btn" data-i18n="game_start">Start Game</button>
+            <div id="game-over" class="hidden">
+              <h3 data-i18n="game_over">Game Over!</h3>
+              <button id="restart-btn" data-i18n="game_try_again">Try Again</button>
+            </div>
+            <div id="game-win" class="hidden">
+              <h3 data-i18n="game_win">You Found Home! 🏠</h3>
+              <p data-i18n="game_win_msg">Thank you for bringing Batman back!</p>
+              <button id="restart-win-btn" data-i18n="game_play_again">Play Again</button>
+            </div>
+            
+            <!-- Mobile Controls -->
+            <div id="mobile-controls" class="hidden">
+              <button id="btn-left" class="control-btn">⬅️</button>
+              <button id="btn-jump" class="control-btn">⬆️ Jump</button>
+              <button id="btn-right" class="control-btn">➡️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="panel">
+      <div class="panel-inner">
+        <h2 data-i18n="story_title">Who is Batman?</h2>
+        <p data-i18n="story_p1">Batman is a domestic black cat with bright yellow eyes. He is distinctive for his <strong>very long tail</strong> (almost the length of his body) and has <strong>no white spots</strong> at all.</p>
+        <p data-i18n="story_p2">He was <strong>wearing a collar</strong> when he went missing. He is deeply loved by our family and has gone missing from our home.</p>
+        
+        <div class="info-box">
+          <h4 data-i18n="story_box_title">🏠 Personality & Safety</h4>
+          <p data-i18n="story_box_p1">Batman is a very friendly cat, but please note: <strong>his friendliness does not mean he wants to go home with you.</strong></p>
+          <p data-i18n="story_box_p2">He was <strong>born at this home</strong> and has lived here his entire life. He belongs with his family who misses him dearly.</p>
+          <p data-i18n="story_box_p3">🙏 Please let him back home safely.</p>
+        </div>
+
+        <p style="margin-top: 24px; font-size: 0.9em; opacity: 0.8" data-i18n="story_note">
+          Note: While the "Flow" movie has made black cats popular recently, Batman is <strong>NOT</strong> the cat from the movie. He is a real, cherished pet who needs to come home.
+        </p>
+      </div>
+    </section>
+
+    <section id="photos" class="panel">
+      <div class="panel-inner">
+        <h2 data-i18n="photos_title">Real Photos</h2>
+        <div class="slider-container">
+          <div class="slides-wrapper">
+            <div class="slide active">
+              <img src="./batman-1.jpg" alt="Real photo of Batman the cat" loading="lazy">
+            </div>
+            <div class="slide">
+              <img src="./batman-2.jpg" alt="Real photo of Batman the cat" loading="lazy">
+            </div>
+            <div class="slide">
+              <img src="./batman-3.jpg" alt="Real photo of Batman the cat" loading="lazy">
+            </div>
+            <div class="slide">
+              <img src="./batman-4.jpeg" alt="Real photo of Batman the cat" loading="lazy">
+            </div>
+            <div class="slide">
+              <img src="./batman-5.jpeg" alt="Real photo of Batman the cat" loading="lazy">
+            </div>
+          </div>
+          <button class="slider-btn prev" aria-label="Previous slide">❮</button>
+          <button class="slider-btn next" aria-label="Next slide">❯</button>
+          <div class="slider-dots"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="clues" class="panel">
+      <div class="panel-inner">
+        <h2 data-i18n="clues_title">Details</h2>
+        <div class="detail-grid">
+          <div class="detail-card">
+            <div class="icon">🖤</div>
+            <h3 data-i18n="clue_color">Color</h3>
+            <p data-i18n="clue_color_desc">All Black<br><span style="font-size:0.6em; opacity:0.7">(No White Spots)</span></p>
+          </div>
+          <div class="detail-card">
+            <div class="icon">🧣</div>
+            <h3 data-i18n="clue_collar">Collar</h3>
+            <p data-i18n="clue_collar_desc">Black with<br><span style="font-size:0.6em; opacity:0.7">Yellow Stripes</span></p>
+          </div>
+          <div class="detail-card">
+            <div class="icon">🐈‍⬛</div>
+            <h3 data-i18n="clue_tail">Tail</h3>
+            <p data-i18n="clue_tail_desc">Very Long</p>
+          </div>
+          <div class="detail-card highlight">
+            <div class="icon">🎁</div>
+            <h3 data-i18n="clue_reward">Reward</h3>
+            <p data-i18n="clue_reward_desc">Cash Reward</p>
+          </div>
+          <div class="detail-card">
+            <div class="icon">✅</div>
+            <h3 data-i18n="clue_policy">Policy</h3>
+            <p data-i18n="clue_policy_desc">No Questions Asked</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="last-seen" class="panel">
+      <div class="panel-inner">
+        <h2 data-i18n="last_seen_title">Last Seen</h2>
+        <p data-i18n="last_seen_desc">Batman was last seen around our house in:</p>
+        <div class="location-box">
+          <span class="icon">📍</span>
+          <span class="text" data-i18n="last_seen_loc">Taman Antarabangsa, Likas</span>
+        </div>
+        <p data-i18n="last_seen_help">If you have seen him or accidentally brought him home, please help us reunite with him.</p>
+      </div>
+    </section>
+    <section id="help" class="panel">
+      <div class="panel-inner" style="text-align: center;">
+        <h2 data-i18n="help_title">Help Bring Batman Home</h2>
+        <p data-i18n="help_desc">If you spot a sleek black cat with bright yellow eyes in the Likas area, please contact us immediately.</p>
+        
+        <div class="alert-box" style="margin: 32px auto; max-width: 600px;">
+          <div class="icon">⚠️</div>
+          <div class="content">
+            <h4 data-i18n="alert_title">Urgent: Illegal Sale Warning</h4>
+            <p data-i18n="alert_desc">If you see someone trying to sell a cat that matches Batman's description, <strong>please help us and tell us immediately.</strong> We need your help to bring him home.</p>
+          </div>
+        </div>
+
+        <div class="compassion-box">
+          <h3 data-i18n="compassion_title">💌 A Message to the Person Who Has Him</h3>
+          <p data-i18n="compassion_p1">We ask you nicely: if you have taken Batman, <strong>please bring him back to us.</strong> We promise that <strong>we will not ask any questions</strong> if you return him safely.</p>
+          <p data-i18n="compassion_p2">However, if you choose not to return him, we beg you to <span class="highlight-text">please take good care of him.</span> He was born at our home and is very dear to us.</p>
+          <p data-i18n="compassion_p3">If you cannot afford to buy food or provide for him, <strong>please contact us.</strong> We are willing to <span class="highlight-text">transfer money to you for his well-being</span>. His safety and health are all that matter to us.</p>
+        </div>
+
+        <div style="margin-top: 32px;">
+          <a class="cta" href="https://wa.me/60143192305?text=I%20have%20info%20about%20Batman" target="_blank" data-i18n="whatsapp_cta">
+            <span class="icon" style="margin-right: 8px">📱</span> WhatsApp Us Now
+          </a>
+        </div>
+      </div>
+    </section>
+    <section id="contact" class="contact">
+      <div class="contact-card" style="text-align: center;">
+        <div style="font-size: 48px; margin-bottom: 24px;">💬</div>
+        <h2 data-i18n="contact_title">Contact Us</h2>
+        <p style="margin-bottom: 32px; color: var(--muted);" data-i18n="contact_desc">We are available 24/7. Please don't hesitate to reach out if you have any information.</p>
+        
+        <a class="cta whatsapp-btn" href="https://wa.me/60143192305?text=I%20have%20info%20about%20Batman" target="_blank" data-i18n="contact_chat">
+          Chat on WhatsApp
+        </a>
+        
+        <p style="margin-top: 24px; font-size: 14px; opacity: 0.6;" data-i18n="contact_call">
+          or call us directly at <a href="tel:+60143192305" style="color: var(--accent); text-decoration: none;">+60 14-319 2305</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>© <span id="year"></span> BATMAN</div>
+  </footer>
+
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./app.js"></script>
+  <script src="./game.js"></script>
+</body>
+</html>
