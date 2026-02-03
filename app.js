@@ -107,8 +107,21 @@ gsap.utils.toArray(".detail-grid").forEach(grid => {
 
 // Social Share Functions
 function shareFacebook() {
-  const url = encodeURIComponent(window.location.href);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({
+      title: 'Missing Cat: Batman',
+      text: 'Please help find Batman, our missing black cat!',
+      url: url
+    }).catch(err => {
+      // If user cancels or share fails, fallback to web
+      console.log('Share failed or canceled', err);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    });
+  } else {
+    // Fallback for desktop or unsupported browsers
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+  }
 }
 
 function shareWhatsApp() {
