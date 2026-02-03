@@ -100,11 +100,107 @@ gsap.utils.toArray(".detail-grid").forEach(grid => {
     ease: "back.out(1.7)",
     scrollTrigger: {
       trigger: grid,
-      start: "top 85%",
-      toggleActions: "play none none reverse"
+      start: "top 80%",
     }
   })
 })
+
+// Social Share Functions
+function shareFacebook() {
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function shareWhatsApp() {
+  const text = encodeURIComponent(`Help find Batman, a missing black cat! ${window.location.href}`);
+  window.open(`https://wa.me/?text=${text}`, '_blank');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.getElementById('copy-text');
+    const original = btn.innerText;
+    btn.innerText = "Copied!";
+    setTimeout(() => btn.innerText = original, 2000);
+  });
+}
+
+// Generate Poster Function
+function generatePoster() {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  
+  // A4 size at ~100 DPI (approx 800x1131)
+  canvas.width = 800;
+  canvas.height = 1131;
+  
+  // Background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Header
+  ctx.fillStyle = '#ff3b30';
+  ctx.font = 'bold 80px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('MISSING CAT', canvas.width / 2, 80);
+  
+  // Subheader
+  ctx.fillStyle = '#000000';
+  ctx.font = '30px Inter, sans-serif';
+  ctx.fillText('Have you seen Batman?', canvas.width / 2, 140);
+  
+  // Image
+  const img = new Image();
+  img.crossOrigin = "Anonymous";
+  img.onload = () => {
+    // Aspect fit
+    const h = 500;
+    const w = (img.width / img.height) * h;
+    ctx.drawImage(img, (canvas.width - w) / 2, 180, w, h);
+    
+    // Details
+    ctx.fillStyle = '#000000';
+    ctx.textAlign = 'left';
+    const startX = 100;
+    let startY = 740;
+    
+    ctx.font = 'bold 30px Inter, sans-serif';
+    ctx.fillText('Name:', startX, startY);
+    ctx.font = '30px Inter, sans-serif';
+    ctx.fillText('Batman (Black Cat)', startX + 160, startY);
+    
+    startY += 50;
+    ctx.font = 'bold 30px Inter, sans-serif';
+    ctx.fillText('Missing:', startX, startY);
+    ctx.font = '30px Inter, sans-serif';
+    ctx.fillText('23 January 2026', startX + 160, startY);
+    
+    startY += 50;
+    ctx.font = 'bold 30px Inter, sans-serif';
+    ctx.fillText('Location:', startX, startY);
+    ctx.font = '30px Inter, sans-serif';
+    ctx.fillText('Taman Antarabangsa, Likas', startX + 160, startY);
+    
+    // Contact Box
+    ctx.fillStyle = '#ff3b30';
+    ctx.fillRect(0, 930, canvas.width, 201);
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 40px Inter, sans-serif';
+    ctx.fillText('IF FOUND PLEASE CALL', canvas.width / 2, 1000);
+    ctx.font = 'bold 70px Inter, sans-serif';
+    ctx.fillText('+60 14-319 2305', canvas.width / 2, 1080);
+    
+    // Download
+    const link = document.createElement('a');
+    link.download = 'missing-batman-poster.jpg';
+    link.href = canvas.toDataURL('image/jpeg', 0.9);
+    link.click();
+  };
+  img.src = 'batman-2.jpg';
+}
 
 // Photo Slider Logic
 const slider = document.querySelector('.slider-container');

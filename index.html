@@ -51,6 +51,25 @@
           <span class="icon" style="margin-right: 8px; font-size: 1.2em">💬</span> I Found Him
         </a>
         <a class="cta secondary" href="#clues" data-i18n="cta_details">View Details</a>
+        <a class="cta secondary poster" href="#" onclick="generatePoster(); return false;" data-i18n="cta_poster">
+          <span class="icon" style="margin-right: 8px;">📄</span> Download Poster
+        </a>
+      </div>
+      
+      <!-- Social Share Buttons -->
+      <div class="share-buttons">
+        <p class="share-label" data-i18n="share_label">Help us spread the word:</p>
+        <div class="share-links">
+          <a href="#" class="share-btn fb" onclick="shareFacebook(); return false;">
+            <span>Share on Facebook</span>
+          </a>
+          <a href="#" class="share-btn wa" onclick="shareWhatsApp(); return false;">
+            <span>Share on WhatsApp</span>
+          </a>
+          <a href="#" class="share-btn copy" onclick="copyLink(); return false;">
+            <span id="copy-text" data-i18n="share_copy">Copy Link</span>
+          </a>
+        </div>
       </div>
     </div>
     <div class="cat-wrap">
@@ -274,6 +293,23 @@
           <span class="icon">📍</span>
           <span class="text" data-i18n="last_seen_loc">Taman Antarabangsa, Likas</span>
         </div>
+        
+        <!-- Embedded Map -->
+        <div class="map-container">
+          <iframe 
+            width="100%" 
+            height="300" 
+            frameborder="0" 
+            scrolling="no" 
+            marginheight="0" 
+            marginwidth="0" 
+            src="https://maps.google.com/maps?q=Taman+Antarabangsa,+Likas&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            style="border-radius: 12px; margin-top: 24px; border: 1px solid rgba(255,255,255,0.1);"
+            title="Map of Last Seen Location"
+            loading="lazy">
+          </iframe>
+        </div>
+
         <p data-i18n="last_seen_help">If you have seen him or accidentally brought him home, please help us reunite with him.</p>
       </div>
     </section>
