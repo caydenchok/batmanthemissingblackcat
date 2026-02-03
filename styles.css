@@ -660,6 +660,7 @@ footer {
   .panel-inner { padding: 40px 24px; }
   .site-header { padding: 0 20px; }
   .nav { display: none; } /* Simplified for now */
+  .share-links { justify-content: center; }
 }
 
 /* Status Update Card */
