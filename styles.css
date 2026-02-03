@@ -68,12 +68,26 @@ body {
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
   font-size: 24px;
+  color: #fff; /* Fallback */
+  text-decoration: none;
+}
+
+.brand span {
   background: linear-gradient(to right, #fff, #888);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.brand img {
+  height: 40px;
+  width: auto;
+  filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.3));
 }
 .nav a {
   color: var(--muted);
