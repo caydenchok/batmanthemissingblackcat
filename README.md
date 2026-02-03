@@ -5,6 +5,9 @@ This project includes a 3D mini-game, clues, real photos, and contact informatio
 
 ## Features
 
+- **Social Sharing**: Share buttons for Facebook, WhatsApp, and Link Copy.
+- **Downloadable Poster**: Auto-generated missing cat poster.
+- **Location Map**: Embedded map of the last seen location.
 - **3D Mini-Game**: Help Batman find his way home (built with Three.js).
 - **Multi-language Support**: English, Bahasa Melayu, and Chinese (Switchable).
 - **Interactive Story**: Scroll-triggered animations using GSAP.
