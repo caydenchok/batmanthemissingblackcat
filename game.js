@@ -184,6 +184,13 @@ function createBatman() {
     const collar = new THREE.Mesh(collarGeo, collarMat);
     collar.position.set(0, 0.9, 0.8);
     batman.add(collar);
+
+    // Collar Stripe (Yellow)
+    const stripeGeo = new THREE.BoxGeometry(0.86, 0.04, 0.86);
+    const stripeMat = new THREE.MeshBasicMaterial({ color: 0xffcc00 });
+    const stripe = new THREE.Mesh(stripeGeo, stripeMat);
+    stripe.position.set(0, 0.9, 0.8);
+    batman.add(stripe);
     
     // Bell
     const bellGeo = new THREE.BoxGeometry(0.1, 0.1, 0.1);

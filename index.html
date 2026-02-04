@@ -6,20 +6,23 @@
   <meta name="theme-color" content="#0d0d0f">
   <title>BATMAN - Missing Black Cat</title>
   <meta name="description" content="If you have accidentally taken Batman, please bring him back to us. We promise that we will not ask any questions if you return him safely. However, if you choose not to return him, we beg you to please take good care of him. He was born at our home and is very dear to us. Please have mercy towards the owners who raised him and love him. His safety and health are all that matter to us.">
+  <meta name="keywords" content="missing cat, black cat, lost cat, Batman, Taman Antarabangsa, Likas, Kota Kinabalu, Sabah, help find cat, reward">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://batmanthemissingblackcat.online/">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://batmanthemissingblackcat.vercel.app/">
+  <meta property="og:url" content="https://batmanthemissingblackcat.online/">
   <meta property="og:title" content="MISSING: Batman (Black Cat) - Please Help Us">
   <meta property="og:description" content="If you have accidentally taken Batman, please bring him back to us. We promise that we will not ask any questions if you return him safely. However, if you choose not to return him, we beg you to please take good care of him. He was born at our home and is very dear to us. Please have mercy towards the owners who raised him and love him. His safety and health are all that matter to us.">
-  <meta property="og:image" content="https://batmanthemissingblackcat.vercel.app/batman-2.jpg">
+  <meta property="og:image" content="https://batmanthemissingblackcat.online/batman-2.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://batmanthemissingblackcat.vercel.app/">
+  <meta property="twitter:url" content="https://batmanthemissingblackcat.online/">
   <meta property="twitter:title" content="MISSING: Batman (Black Cat) - Please Help Us">
   <meta property="twitter:description" content="If you have accidentally taken Batman, please bring him back to us. We promise that we will not ask any questions if you return him safely. However, if you choose not to return him, we beg you to please take good care of him. He was born at our home and is very dear to us. Please have mercy towards the owners who raised him and love him. His safety and health are all that matter to us.">
-  <meta property="twitter:image" content="https://batmanthemissingblackcat.vercel.app/batman-2.jpg">
+  <meta property="twitter:image" content="https://batmanthemissingblackcat.online/batman-2.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -28,6 +31,33 @@
   <!-- Three.js for 3D Game -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "BATMAN - Missing Black Cat",
+    "description": "Urgent appeal to find Batman, a black cat missing from Taman Antarabangsa, Likas since 23 January 2026.",
+    "url": "https://batmanthemissingblackcat.online/",
+    "primaryImageOfPage": {
+      "@type": "ImageObject",
+      "url": "https://batmanthemissingblackcat.online/batman-2.jpg",
+      "width": 1200,
+      "height": 630
+    },
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "xpath": ["/html/head/title", "/html/head/meta[@name='description']/@content"]
+    },
+    "mainEntity": {
+      "@type": "CreativeWork",
+      "name": "Missing Pet Flyer for Batman",
+      "text": "Our beloved black cat went missing on 23 January 2026 in Taman Antarabangsa, Likas. We need your help to find him.",
+      "keywords": "missing cat, black cat, Likas, Taman Antarabangsa"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="background-animation">
@@ -283,6 +313,34 @@
             </div>
         </div>
 
+        <div class="detail-grid">
+          <div class="detail-card">
+            <span class="icon">⚫</span>
+            <h3 data-i18n="clue_color">Color</h3>
+            <p data-i18n="clue_color_desc">All Black<br><span style="font-size:0.6em; opacity:0.7">(No White Spots)</span></p>
+          </div>
+          <div class="detail-card highlight">
+            <span class="icon">🎗️</span>
+            <h3 data-i18n="clue_collar">Collar</h3>
+            <p data-i18n="clue_collar_desc">Black with<br><span style="font-size:0.6em; opacity:0.7">Yellow Stripes</span></p>
+          </div>
+          <div class="detail-card">
+            <span class="icon">🐈‍⬛</span>
+            <h3 data-i18n="clue_tail">Tail</h3>
+            <p data-i18n="clue_tail_desc">Very Long</p>
+          </div>
+          <div class="detail-card highlight">
+            <span class="icon">💰</span>
+            <h3 data-i18n="clue_reward">Reward</h3>
+            <p data-i18n="clue_reward_desc">Cash Reward</p>
+          </div>
+          <div class="detail-card">
+            <span class="icon">🤝</span>
+            <h3 data-i18n="clue_policy">Policy</h3>
+            <p data-i18n="clue_policy_desc">No Questions Asked</p>
+          </div>
+        </div>
+
       </div>
     </section>
     <section id="last-seen" class="panel">
@@ -366,7 +424,7 @@
   <script src="./i18n.js"></script>
   <script src="./app.js"></script>
   <script src="./cat-viewer.js"></script>
-  <script src="./game.js?v=9"></script>
+  <script src="./game.js?v=10"></script>
   <!-- Deployment Trigger: v1.1 - Added Poster & Map -->
 </body>
 </html>
