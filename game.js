@@ -1,6 +1,7 @@
 // Game Configuration
 const GAME_CONFIG = {
-    speed: 0.3, // Increased speed
+    minSpeed: 0.2,
+    maxSpeed: 0.7, // Reaches this at 900m
     jumpForce: 0.3, // Increased jump force
     gravity: 0.015,
     laneWidth: 3, // Increased lane width
@@ -12,6 +13,7 @@ let batman, floor;
 let obstacles = [];
 let gameActive = false;
 let distance = 0;
+let currentSpeed = GAME_CONFIG.minSpeed;
 let playerPosition = 0; // -1 (left), 0 (center), 1 (right)
 let isJumping = false;
 let verticalVelocity = 0;
@@ -398,8 +400,17 @@ function animate() {
     requestAnimationFrame(animate);
 
     if (gameActive) {
+        // Calculate Dynamic Speed
+        // Slow (minSpeed) to Fast (maxSpeed) from 0m to 900m
+        if (distance < 900) {
+            const progress = distance / 900;
+            currentSpeed = GAME_CONFIG.minSpeed + (GAME_CONFIG.maxSpeed - GAME_CONFIG.minSpeed) * progress;
+        } else {
+            currentSpeed = GAME_CONFIG.maxSpeed;
+        }
+
         // Move Forward
-        distance += GAME_CONFIG.speed;
+        distance += currentSpeed;
         const lang = document.documentElement.lang || 'en';
         const prefix = (window.translations && window.translations[lang] && window.translations[lang].game_distance) || "Distance: ";
         scoreElement.innerText = `${prefix}${Math.floor(distance)}m / ${GAME_CONFIG.totalDistance}m`;
@@ -410,7 +421,13 @@ function animate() {
         
         // Spawn Obstacles
         obstacleSpawnTimer++;
-        if (obstacleSpawnTimer > 60) { // Every ~1 sec
+        // Adjust spawn rate based on speed to keep density consistent or harder
+        // Higher speed = spawn faster?
+        // Base rate 60 frames (1 sec at 60fps)
+        // Let's spawn more often as we get faster to maintain challenge
+        const spawnRate = Math.max(20, Math.floor(60 - (currentSpeed - GAME_CONFIG.minSpeed) * 80));
+        
+        if (obstacleSpawnTimer > spawnRate) { 
             if (distance < GAME_CONFIG.totalDistance - 50) { // Stop spawning near end
                 createObstacle(-50); // Spawn far ahead
             }
@@ -419,7 +436,7 @@ function animate() {
 
         // Move Obstacles
         obstacles.forEach((obs, index) => {
-            obs.position.z += GAME_CONFIG.speed;
+            obs.position.z += currentSpeed;
 
             // Simple wobble animation for characters (Groups)
             if (obs.type === 'Group') {
@@ -442,7 +459,7 @@ function animate() {
         // Find the house in the scene (hacky, but works for simple script)
         scene.children.forEach(child => {
             if (child.type === "Group" && child !== batman) { // The house is a group
-                child.position.z += GAME_CONFIG.speed;
+                child.position.z += currentSpeed;
                 if (child.position.z > 0 && distance >= GAME_CONFIG.totalDistance) {
                     gameWin();
                 }
