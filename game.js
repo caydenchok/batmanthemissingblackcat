@@ -9,7 +9,7 @@ const GAME_CONFIG = {
 };
 
 let scene, camera, renderer;
-let batman, floor;
+let batman, floor, movingGrid;
 let obstacles = [];
 let gameActive = false;
 let distance = 0;
@@ -115,19 +115,11 @@ function createFloor() {
     floor.receiveShadow = true;
     scene.add(floor);
 
-    // Lane markers
-    const lineGeo = new THREE.PlaneGeometry(0.2, 2000);
-    const lineMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
-    
-    const leftLine = new THREE.Mesh(lineGeo, lineMat);
-    leftLine.rotation.x = -Math.PI / 2;
-    leftLine.position.set(-GAME_CONFIG.laneWidth/2, 0.01, -500);
-    scene.add(leftLine);
-
-    const rightLine = new THREE.Mesh(lineGeo, lineMat);
-    rightLine.rotation.x = -Math.PI / 2;
-    rightLine.position.set(GAME_CONFIG.laneWidth/2, 0.01, -500);
-    scene.add(rightLine);
+    // Moving Grid for speed illusion
+    movingGrid = new THREE.GridHelper(50, 50, 0x444444, 0x222222);
+    movingGrid.position.y = 0.02;
+    movingGrid.position.z = 0;
+    scene.add(movingGrid);
 }
 
 function createBatman() {
@@ -330,6 +322,11 @@ function startGame() {
     obstacles.forEach(ob => scene.remove(ob));
     obstacles = [];
 
+    // Pre-spawn obstacles so the game isn't empty at start
+    for (let z = -20; z > -100; z -= 25) {
+        createObstacle(z);
+    }
+
     // Reset UI
     startBtn.style.display = 'none';
     gameOverElement.classList.add('hidden');
@@ -413,6 +410,13 @@ function animate() {
 
         // Move Forward
         distance += currentSpeed;
+
+        // Move Grid to create speed illusion
+        if (movingGrid) {
+            movingGrid.position.z += currentSpeed;
+            if (movingGrid.position.z >= 1) movingGrid.position.z = 0;
+        }
+
         const lang = document.documentElement.lang || 'en';
         const prefix = (window.translations && window.translations[lang] && window.translations[lang].game_distance) || "Distance: ";
         scoreElement.innerText = `${prefix}${Math.floor(distance)}m / ${GAME_CONFIG.totalDistance}m`;
