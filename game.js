@@ -133,34 +133,52 @@ function createFloor() {
 function createBatman() {
     batman = new THREE.Group();
 
+    // Digital Wireframe Material
+    const digitalMat = new THREE.MeshBasicMaterial({ 
+        color: 0x00ffff, // Cyan/Neon Blue
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8
+    });
+
+    // Inner Core Material (to make it more visible)
+    const coreMat = new THREE.MeshBasicMaterial({
+        color: 0x001133, // Dark Blue background for the wireframe
+        transparent: true,
+        opacity: 0.5
+    });
+
+    // Helper to create Digital Part
+    const createDigitalPart = (geometry, x, y, z, rotX = 0) => {
+        // Wireframe
+        const wire = new THREE.Mesh(geometry, digitalMat);
+        wire.position.set(x, y, z);
+        wire.rotation.x = rotX;
+        
+        // Solid Core
+        const core = new THREE.Mesh(geometry, coreMat);
+        core.position.set(x, y, z);
+        core.rotation.x = rotX;
+        core.castShadow = true;
+
+        batman.add(core);
+        batman.add(wire);
+    };
+
     // Body
-    const bodyGeo = new THREE.BoxGeometry(1, 1, 2);
-    const blackMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
-    const body = new THREE.Mesh(bodyGeo, blackMat);
-    body.position.y = 0.5;
-    body.castShadow = true;
-    batman.add(body);
+    createDigitalPart(new THREE.BoxGeometry(1, 1, 2), 0, 0.5, 0);
 
     // Head
-    const headGeo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
-    const head = new THREE.Mesh(headGeo, blackMat);
-    head.position.set(0, 1.2, 0.8);
-    head.castShadow = true;
-    batman.add(head);
+    createDigitalPart(new THREE.BoxGeometry(0.8, 0.8, 0.8), 0, 1.2, 0.8);
 
     // Ears
     const earGeo = new THREE.ConeGeometry(0.15, 0.4, 4);
-    const earL = new THREE.Mesh(earGeo, blackMat);
-    earL.position.set(-0.25, 1.7, 0.8);
-    batman.add(earL);
-    
-    const earR = new THREE.Mesh(earGeo, blackMat);
-    earR.position.set(0.25, 1.7, 0.8);
-    batman.add(earR);
+    createDigitalPart(earGeo, -0.25, 1.7, 0.8);
+    createDigitalPart(earGeo, 0.25, 1.7, 0.8);
 
-    // Eyes (Yellow)
+    // Eyes (Glowing Digital Eyes)
     const eyeGeo = new THREE.BoxGeometry(0.15, 0.15, 0.1);
-    const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffcc00 });
+    const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Bright White
     
     const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
     eyeL.position.set(-0.2, 1.3, 1.21);
@@ -171,15 +189,11 @@ function createBatman() {
     batman.add(eyeR);
 
     // Tail
-    const tailGeo = new THREE.BoxGeometry(0.2, 0.2, 1.5);
-    const tail = new THREE.Mesh(tailGeo, blackMat);
-    tail.position.set(0, 0.8, -1.2);
-    tail.rotation.x = 0.5;
-    batman.add(tail);
+    createDigitalPart(new THREE.BoxGeometry(0.2, 0.2, 1.5), 0, 0.8, -1.2, 0.5);
 
-    // Collar
+    // Collar (Digital Red)
     const collarGeo = new THREE.BoxGeometry(0.85, 0.1, 0.85);
-    const collarMat = new THREE.MeshBasicMaterial({ color: 0xff3b30 });
+    const collarMat = new THREE.MeshBasicMaterial({ color: 0xff0055, wireframe: true });
     const collar = new THREE.Mesh(collarGeo, collarMat);
     collar.position.set(0, 0.9, 0.8);
     batman.add(collar);
