@@ -302,9 +302,20 @@ body {
 }
 /* Game Section Styles */
 .game-container {
-  text-align: center;
-  width: 100%;
-  max-width: 800px !important;
+    text-align: center;
+    width: 100%;
+    max-width: 800px; /* Removed !important to allow override */
+}
+
+/* Desktop Mode: Make it bigger */
+@media (min-width: 1024px) {
+    .game-container {
+        max-width: 1200px;
+    }
+    
+    #game-canvas-container {
+        height: 600px !important;
+    }
 }
 
 #game-canvas-container {
