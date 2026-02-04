@@ -192,25 +192,92 @@ function createObstacle(zPos) {
     const type = Math.random();
     let obstacle;
 
-    if (type > 0.5) {
+    if (type < 0.25) {
         // Crate
         const geo = new THREE.BoxGeometry(1.5, 1.5, 1.5);
         const mat = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
         obstacle = new THREE.Mesh(geo, mat);
         obstacle.position.y = 0.75;
-    } else {
+    } else if (type < 0.5) {
         // Rock
         const geo = new THREE.DodecahedronGeometry(0.8);
         const mat = new THREE.MeshStandardMaterial({ color: 0x666666 });
         obstacle = new THREE.Mesh(geo, mat);
         obstacle.position.y = 0.8;
+    } else if (type < 0.75) {
+        // Dog
+        obstacle = new THREE.Group();
+        
+        // Body
+        const bodyGeo = new THREE.BoxGeometry(0.8, 0.6, 1.2);
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0xCD853F }); // Peru color
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = 0.5;
+        obstacle.add(body);
+        
+        // Head
+        const headGeo = new THREE.BoxGeometry(0.5, 0.5, 0.6);
+        const head = new THREE.Mesh(headGeo, bodyMat);
+        head.position.set(0, 0.9, 0.5);
+        obstacle.add(head);
+
+        // Ears
+        const earGeo = new THREE.ConeGeometry(0.1, 0.2, 4);
+        const earL = new THREE.Mesh(earGeo, bodyMat);
+        earL.position.set(-0.15, 1.2, 0.5);
+        obstacle.add(earL);
+        const earR = new THREE.Mesh(earGeo, bodyMat);
+        earR.position.set(0.15, 1.2, 0.5);
+        obstacle.add(earR);
+
+        obstacle.position.y = 0;
+    } else {
+        // Fat Ugly Thief
+        obstacle = new THREE.Group();
+        
+        // Fat Body
+        const bodyGeo = new THREE.BoxGeometry(1.8, 1.5, 1.0); // Wide and fat
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x2F4F4F }); // Dark Slate Gray
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = 0.75;
+        obstacle.add(body);
+        
+        // Ugly Head
+        const headGeo = new THREE.BoxGeometry(0.5, 0.6, 0.5);
+        const skinMat = new THREE.MeshStandardMaterial({ color: 0xFFCCAA });
+        const head = new THREE.Mesh(headGeo, skinMat);
+        head.position.set(0, 1.6, 0);
+        obstacle.add(head);
+        
+        // Mask
+        const maskGeo = new THREE.BoxGeometry(0.55, 0.2, 0.55);
+        const maskMat = new THREE.MeshStandardMaterial({ color: 0x000000 });
+        const mask = new THREE.Mesh(maskGeo, maskMat);
+        mask.position.set(0, 1.85, 0);
+        obstacle.add(mask);
+        
+        // Loot Bag
+        const bagGeo = new THREE.DodecahedronGeometry(0.6);
+        const bagMat = new THREE.MeshStandardMaterial({ color: 0xDAA520 }); // Gold color
+        const bag = new THREE.Mesh(bagGeo, bagMat);
+        bag.position.set(0.6, 1.0, -0.6);
+        obstacle.add(bag);
+
+        obstacle.position.y = 0;
     }
 
     // Random lane (-1, 0, 1)
     const lane = Math.floor(Math.random() * 3) - 1;
     obstacle.position.x = lane * GAME_CONFIG.laneWidth;
     obstacle.position.z = zPos;
-    obstacle.castShadow = true;
+    
+    // Shadow support
+    obstacle.traverse((child) => {
+        if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+        }
+    });
     
     // Add collision data
     obstacle.userData = { lane: lane, passed: false };
@@ -353,6 +420,12 @@ function animate() {
         // Move Obstacles
         obstacles.forEach((obs, index) => {
             obs.position.z += GAME_CONFIG.speed;
+
+            // Simple wobble animation for characters (Groups)
+            if (obs.type === 'Group') {
+                obs.rotation.z = Math.sin(Date.now() * 0.01 + obs.id) * 0.05; // Waddle
+                obs.position.y = Math.abs(Math.sin(Date.now() * 0.015 + obs.id)) * 0.1; // Hop
+            }
             
             // Remove if passed
             if (obs.position.z > 10) {
