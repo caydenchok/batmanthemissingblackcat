@@ -9,7 +9,7 @@ const GAME_CONFIG = {
 };
 
 let scene, camera, renderer;
-let batman, floor, movingGrid;
+let batman, floor, movingGrid, house;
 let obstacles = [];
 let gameActive = false;
 let distance = 0;
@@ -435,7 +435,7 @@ function animate() {
         
         if (obstacleSpawnTimer > spawnRate) { 
             if (distance < GAME_CONFIG.totalDistance - 50) { // Stop spawning near end
-                createObstacle(-50); // Spawn far ahead
+                createObstacle(-100); // Spawn far ahead in fog
             }
             obstacleSpawnTimer = 0;
         }
