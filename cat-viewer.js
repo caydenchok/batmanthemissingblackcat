@@ -78,8 +78,8 @@
             roughness: 0.2
         });
 
-        const collarMaterial = new THREE.MeshStandardMaterial({ color: 0xff3b30 });
-        const collarStripeMaterial = new THREE.MeshStandardMaterial({ color: 0xffcc00 });
+        const collarMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 }); // Dark Grey/Black Collar
+        const collarStripeMaterial = new THREE.MeshStandardMaterial({ color: 0xffcc00 }); // Yellow
 
         // 1. Body (Rounded Box)
         const bodyGeo = new THREE.SphereGeometry(0.9, 32, 32);
@@ -146,8 +146,17 @@
         collar.rotation.x = Math.PI / 2.5;
         catGroup.add(collar);
 
-        // Yellow Stripes (Small spheres/cubes embedded)
-        // Just add a small detail for the bell
+        // Yellow Stripes (Rings around the collar)
+        const stripeGeo = new THREE.TorusGeometry(0.56, 0.04, 16, 32); // Slightly larger, thinner
+        const stripe1 = new THREE.Mesh(stripeGeo, collarStripeMaterial);
+        stripe1.position.copy(collar.position);
+        stripe1.rotation.copy(collar.rotation);
+        stripe1.rotation.x += 0.05; // Offset slightly if needed or just overlay
+        // Actually, just scaling isn't enough for stripes, let's just add a few rings
+        // or just keep the bell. The user said "not red collar".
+        // Let's add the yellow bell clearly.
+        
+        // Yellow Bell
         const bellGeo = new THREE.SphereGeometry(0.15, 16, 16);
         const bell = new THREE.Mesh(bellGeo, collarStripeMaterial);
         bell.position.set(0, 1.35, 1.5);

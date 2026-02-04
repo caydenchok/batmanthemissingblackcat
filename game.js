@@ -180,10 +180,17 @@ function createBatman() {
 
     // Collar
     const collarGeo = new THREE.BoxGeometry(0.85, 0.1, 0.85);
-    const collarMat = new THREE.MeshBasicMaterial({ color: 0xff3b30 });
+    const collarMat = new THREE.MeshBasicMaterial({ color: 0x333333 }); // Black collar
     const collar = new THREE.Mesh(collarGeo, collarMat);
     collar.position.set(0, 0.9, 0.8);
     batman.add(collar);
+    
+    // Bell
+    const bellGeo = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+    const bellMat = new THREE.MeshBasicMaterial({ color: 0xffcc00 }); // Yellow bell
+    const bell = new THREE.Mesh(bellGeo, bellMat);
+    bell.position.set(0, 0.9, 1.25);
+    batman.add(bell);
 
     // Rotate Batman to face away from camera (running forward into distance)
     batman.rotation.y = Math.PI;
