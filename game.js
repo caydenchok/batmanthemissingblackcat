@@ -297,7 +297,7 @@ function createHouse() {
     const baseMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
     const base = new THREE.Mesh(baseGeo, baseMat);
     base.position.y = 2;
-    houseGroup.add(base);
+    house.add(base);
 
     // Roof
     const roofGeo = new THREE.ConeGeometry(5, 3, 4);
@@ -305,7 +305,7 @@ function createHouse() {
     const roof = new THREE.Mesh(roofGeo, roofMat);
     roof.position.y = 5.5;
     roof.rotation.y = Math.PI / 4;
-    houseGroup.add(roof);
+    house.add(roof);
 
     // Door
     const doorGeo = new THREE.BoxGeometry(1.5, 2.5, 0.1);
@@ -437,7 +437,8 @@ function animate() {
         }
 
         // Move Obstacles
-        obstacles.forEach((obs, index) => {
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            const obs = obstacles[i];
             obs.position.z += currentSpeed;
 
             // Simple wobble animation for characters (Groups)
@@ -449,9 +450,9 @@ function animate() {
             // Remove if passed
             if (obs.position.z > 10) {
                 scene.remove(obs);
-                obstacles.splice(index, 1);
+                obstacles.splice(i, 1);
             }
-        });
+        }
 
         // Move House
         if (house) {
