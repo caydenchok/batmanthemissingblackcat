@@ -1,7 +1,7 @@
 // Game Configuration
 const GAME_CONFIG = {
-    minSpeed: 0.2,
-    maxSpeed: 0.7, // Reaches this at 900m
+    minSpeed: 0.1, // Start very slow
+    maxSpeed: 0.9, // End very fast
     jumpForce: 0.3, // Increased jump force
     gravity: 0.015,
     laneWidth: 3, // Increased lane width
@@ -321,6 +321,7 @@ function startGame() {
     if(gameActive) return;
     gameActive = true;
     distance = 0;
+    currentSpeed = GAME_CONFIG.minSpeed;
     playerPosition = 0;
     batman.position.set(0, 0, 0);
     
