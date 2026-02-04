@@ -110,8 +110,8 @@ function shareFacebook() {
   const url = window.location.href;
   if (navigator.share) {
     navigator.share({
-      title: 'Missing Cat: Batman',
-      text: 'Please help find Batman, our missing black cat!',
+      title: 'MISSING: Batman (Black Cat)',
+      text: 'We ask you nicely: if you have taken Batman, please bring him back to us. We promise that we will not ask any questions if you return him safely. However, if you choose not to return him, we beg you to please take good care of him. He was born at our home and is very dear to us. Please have mercy towards the owners who raised him and love him. His safety and health are all that matter to us.',
       url: url
     }).catch(err => {
       // If user cancels or share fails, fallback to web
