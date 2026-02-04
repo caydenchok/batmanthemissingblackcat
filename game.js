@@ -289,7 +289,8 @@ function createObstacle(zPos) {
 }
 
 function createHouse() {
-    const houseGroup = new THREE.Group();
+    if (house) scene.remove(house);
+    house = new THREE.Group();
     
     // Base
     const baseGeo = new THREE.BoxGeometry(6, 4, 6);
@@ -311,10 +312,10 @@ function createHouse() {
     const doorMat = new THREE.MeshStandardMaterial({ color: 0x654321 });
     const door = new THREE.Mesh(doorGeo, doorMat);
     door.position.set(0, 1.25, 3.01);
-    houseGroup.add(door);
+    house.add(door);
 
-    houseGroup.position.z = -GAME_CONFIG.totalDistance; // End of track
-    scene.add(houseGroup);
+    house.position.z = -GAME_CONFIG.totalDistance; // End of track
+    scene.add(house);
 }
 
 function startGame() {
@@ -452,20 +453,13 @@ function animate() {
             }
         });
 
-        // Move House (simulated by moving everything else? No, let's keep it simple)
-        // Wait, standard runner logic:
-        // Player stays at Z=0. World moves Z+.
-        // So House starts at -TotalDistance and moves Z+.
-        
-        // Find the house in the scene (hacky, but works for simple script)
-        scene.children.forEach(child => {
-            if (child.type === "Group" && child !== batman) { // The house is a group
-                child.position.z += currentSpeed;
-                if (child.position.z > 0 && distance >= GAME_CONFIG.totalDistance) {
-                    gameWin();
-                }
+        // Move House
+        if (house) {
+            house.position.z += currentSpeed;
+            if (house.position.z > 0 && distance >= GAME_CONFIG.totalDistance) {
+                gameWin();
             }
-        });
+        }
 
         // Player Movement (Lerp for smooth lane switch)
         const targetX = playerPosition * GAME_CONFIG.laneWidth;
