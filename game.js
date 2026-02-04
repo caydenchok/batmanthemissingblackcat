@@ -9,8 +9,9 @@ const GAME_CONFIG = {
 };
 
 let scene, camera, renderer;
-let batman, floor, movingGrid, house;
+let batman, floor, house;
 let obstacles = [];
+let trees = [];
 let gameActive = false;
 let distance = 0;
 let currentSpeed = GAME_CONFIG.minSpeed;
@@ -115,11 +116,19 @@ function createFloor() {
     floor.receiveShadow = true;
     scene.add(floor);
 
-    // Moving Grid for speed illusion
-    movingGrid = new THREE.GridHelper(50, 50, 0x444444, 0x222222);
-    movingGrid.position.y = 0.02;
-    movingGrid.position.z = 0;
-    scene.add(movingGrid);
+    // Lane markers
+    const lineGeo = new THREE.PlaneGeometry(0.2, 2000);
+    const lineMat = new THREE.MeshBasicMaterial({ color: 0x666666 }); // Lighter grey for visibility
+    
+    const leftLine = new THREE.Mesh(lineGeo, lineMat);
+    leftLine.rotation.x = -Math.PI / 2;
+    leftLine.position.set(-GAME_CONFIG.laneWidth/2, 0.01, -500);
+    scene.add(leftLine);
+
+    const rightLine = new THREE.Mesh(lineGeo, lineMat);
+    rightLine.rotation.x = -Math.PI / 2;
+    rightLine.position.set(GAME_CONFIG.laneWidth/2, 0.01, -500);
+    scene.add(rightLine);
 }
 
 function createBatman() {
@@ -180,6 +189,47 @@ function createBatman() {
     batman.rotation.y = Math.PI;
 
     scene.add(batman);
+}
+
+function createTree(zPos) {
+    const tree = new THREE.Group();
+    
+    // Trunk
+    const trunkGeo = new THREE.CylinderGeometry(0.5, 0.8, 4, 8);
+    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x4A3C31 }); // Dark wood
+    const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+    trunk.position.y = 2;
+    trunk.castShadow = true;
+    tree.add(trunk);
+
+    // Leaves (Cone layers)
+    const leavesMat = new THREE.MeshStandardMaterial({ color: 0x228B22 }); // Forest Green
+    
+    const bottomCone = new THREE.Mesh(new THREE.ConeGeometry(3, 4, 8), leavesMat);
+    bottomCone.position.y = 4;
+    bottomCone.castShadow = true;
+    tree.add(bottomCone);
+
+    const midCone = new THREE.Mesh(new THREE.ConeGeometry(2.5, 3.5, 8), leavesMat);
+    midCone.position.y = 6;
+    midCone.castShadow = true;
+    tree.add(midCone);
+
+    const topCone = new THREE.Mesh(new THREE.ConeGeometry(1.5, 2.5, 8), leavesMat);
+    topCone.position.y = 8;
+    topCone.castShadow = true;
+    tree.add(topCone);
+
+    // Random side (Left or Right of road)
+    // Road width is roughly 3 lanes * 3 width = 9
+    // Trees should be at x < -6 or x > 6
+    const side = Math.random() > 0.5 ? 1 : -1;
+    const distance = 8 + Math.random() * 10;
+    
+    tree.position.set(side * distance, 0, zPos);
+    
+    scene.add(tree);
+    trees.push(tree);
 }
 
 function createObstacle(zPos) {
@@ -321,10 +371,19 @@ function startGame() {
     // Clear old obstacles
     obstacles.forEach(ob => scene.remove(ob));
     obstacles = [];
+    
+    // Clear old trees
+    trees.forEach(t => scene.remove(t));
+    trees = [];
 
     // Pre-spawn obstacles so the game isn't empty at start
     for (let z = -20; z > -100; z -= 25) {
         createObstacle(z);
+    }
+    
+    // Pre-spawn trees
+    for (let z = 0; z > -200; z -= 15) {
+        createTree(z);
     }
 
     // Reset UI
@@ -411,12 +470,6 @@ function animate() {
         // Move Forward
         distance += currentSpeed;
 
-        // Move Grid to create speed illusion
-        if (movingGrid) {
-            movingGrid.position.z += currentSpeed;
-            if (movingGrid.position.z >= 1) movingGrid.position.z = 0;
-        }
-
         const lang = document.documentElement.lang || 'en';
         const prefix = (window.translations && window.translations[lang] && window.translations[lang].game_distance) || "Distance: ";
         scoreElement.innerText = `${prefix}${Math.floor(distance)}m / ${GAME_CONFIG.totalDistance}m`;
@@ -436,6 +489,9 @@ function animate() {
         if (obstacleSpawnTimer > spawnRate) { 
             if (distance < GAME_CONFIG.totalDistance - 50) { // Stop spawning near end
                 createObstacle(-100); // Spawn far ahead in fog
+                
+                // Spawn tree
+                createTree(-100);
             }
             obstacleSpawnTimer = 0;
         }
@@ -455,6 +511,17 @@ function animate() {
             if (obs.position.z > 10) {
                 scene.remove(obs);
                 obstacles.splice(i, 1);
+            }
+        }
+        
+        // Move Trees
+        for (let i = trees.length - 1; i >= 0; i--) {
+            const tree = trees[i];
+            tree.position.z += currentSpeed;
+            
+            if (tree.position.z > 10) {
+                scene.remove(tree);
+                trees.splice(i, 1);
             }
         }
 
